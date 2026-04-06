@@ -1,0 +1,101 @@
+{
+  "theme": "light",
+  "archetype": "Archetype 3: Pastel & Soft (with E1 Neo-Brutalist Twist)",
+  "vibe": "Smart, tactile, organized, and bold. A productivity tool that feels like a modern sketchbook rather than a sterile enterprise app.",
+  "colors": {
+    "background": {
+      "primary": "#F4F4F0",
+      "secondary": "#FFFFFF"
+    },
+    "text": {
+      "primary": "#0A0A0A",
+      "secondary": "#4A4A4A",
+      "inverse": "#FFFFFF"
+    },
+    "brand": {
+      "primary": "#FFD873",
+      "secondary": "#A3E6D0",
+      "accent": "#D8B4E2"
+    },
+    "borders": {
+      "primary": "#0A0A0A",
+      "subtle": "#0A0A0A"
+    },
+    "states": {
+      "success": "#A3E6D0",
+      "warning": "#FFD873",
+      "error": "#FF6B6B"
+    }
+  },
+  "typography": {
+    "fonts": {
+      "headings": "Cabinet Grotesk, sans-serif",
+      "body": "Outfit, sans-serif",
+      "mono": "JetBrains Mono, monospace"
+    },
+    "scale": {
+      "h1": "text-4xl sm:text-5xl lg:text-6xl tracking-tighter font-black",
+      "h2": "text-2xl sm:text-3xl lg:text-4xl tracking-tight font-bold",
+      "h3": "text-xl sm:text-2xl tracking-tight font-bold",
+      "body": "text-base leading-relaxed font-medium",
+      "small": "text-sm font-medium",
+      "label": "text-xs uppercase tracking-[0.2em] font-bold"
+    }
+  },
+  "spacing_and_layout": {
+    "strategy": "Control Room Grid for dashboard, Generous Spacing for content.",
+    "grid": "grid-cols-1 md:grid-cols-4 lg:grid-cols-12 gap-6 md:gap-8",
+    "containers": "bg-white border-2 border-black rounded-lg shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] p-6 md:p-8",
+    "hero_padding": "py-20 px-6 md:px-12",
+    "alignment": "Left-align dense content and forms. Asymmetrical bento grids for dashboard widgets."
+  },
+  "components_strategy": {
+    "buttons": "bg-[#FFD873] text-black border-2 border-black rounded-md shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-y-[2px] hover:translate-x-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all font-bold px-6 py-3",
+    "inputs": "bg-white border-2 border-black rounded-md p-3 focus:ring-0 focus:outline-none focus:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-shadow",
+    "cards": "bg-white border-2 border-black rounded-xl shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] transition-shadow overflow-hidden",
+    "file_upload_zone": "border-4 border-dashed border-black rounded-2xl p-12 text-center bg-[#F4F4F0] hover:bg-[#A3E6D0] transition-colors cursor-pointer group",
+    "mind_map": "Use React Flow (reactflow) or similar library. Nodes should be flat pastel colors (mint, yellow, lavender) with 2px solid black borders and straight/stepped black edges. No drop shadows on nodes, just hard offset shadows."
+  },
+  "motion_and_interactions": {
+    "hover_states": "Hard translations (x and y shifts) rather than fades. Compressing shadows to simulate physical buttons.",
+    "transitions": "transition-all duration-200 ease-in-out",
+    "loading": "Fast, hard-edged marquee progress bars or spinning geometric shapes."
+  },
+  "media": {
+    "images": [
+      {
+        "category": "empty_state_mind_map",
+        "url": "https://static.prod-images.emergentagent.com/jobs/a251a5dd-e6f0-46c0-8b28-dbbf22ea5d24/images/44db6d4c2dbfd5489d28cd057f34ad5f26d98650e0801410bea0d9efd0d9adee.png",
+        "description": "Minimalist geometric shapes connected by thin lines, pale mint and butter yellow, neo-brutalist empty state illustration. Use this in the Mind Map section before a map is generated."
+      },
+      {
+        "category": "empty_state_file_upload",
+        "url": "https://static.prod-images.emergentagent.com/jobs/a251a5dd-e6f0-46c0-8b28-dbbf22ea5d24/images/023bde168efef24b1738aaf2bd3144d85bc64f743adb1a8d52c6ea0975ab27c8.png",
+        "description": "Floating paper sheets with a subtle glow. Use this as a decorative element near the file upload dropzone."
+      },
+      {
+        "category": "user_avatar",
+        "url": "https://images.unsplash.com/photo-1716471081169-cb8528a395d3?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2Njd8MHwxfHNlYXJjaHwyfHxzdHVkZW50JTIwbGVhcm5pbmclMjBsYXB0b3AlMjBwb3J0cmFpdHxlbnwwfHx8fDE3NzQ2MDQzNDZ8MA&ixlib=rb-4.1.0&q=85",
+        "description": "Student learning on laptop. Use this as a placeholder for the user profile avatar in the dashboard header."
+      }
+    ],
+    "icons": {
+      "library": "lucide-react",
+      "style": "Stroke width 2.5 or 3 for a chunkier, brutalist feel matching the bold fonts."
+    }
+  },
+  "accessibility_and_testing": {
+    "contrast": "Ensure all text against pastel backgrounds meets minimum 4.5:1 ratio. The Deep Obsidian (#0A0A0A) text on Mint/Yellow/Lavender easily passes.",
+    "testing_attributes": "All interactive elements, forms, and key informational nodes MUST have a 'data-testid' attribute (e.g., data-testid='upload-notes-button', data-testid='mind-map-canvas')."
+  },
+  "instructions_to_main_agent": [
+    "Build the dashboard using a Neo-Brutalist aesthetic. Do not use soft, blurred drop shadows (e.g., shadow-md). Use hard offset shadows: shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]",
+    "Use Cabinet Grotesk for all headings. Use Outfit for body text.",
+    "Implement the layout using a bento-box grid style. The sidebar navigation should have a solid right border (border-r-2 border-black).",
+    "The file upload zone should be massive, centered, with a dashed border, changing background color on hover/drag-over.",
+    "For the mind map visualization, use a library like 'reactflow'. Style the nodes to match the neo-brutalist cards (pastel background, 2px solid black border).",
+    "In the Combined Notes display area, use standard typography but wrap the content area in a hard-bordered container. Use monospace fonts for tags or metadata.",
+    "Do not use generic Shadcn designs out-of-the-box. Strip the soft borders and add border-2 border-black and hard shadows to standard components like Dialog, Input, and Button.",
+    "Ensure the fonts (Cabinet Grotesk, Outfit, JetBrains Mono) are properly imported in the global CSS or index.html."
+  ]
+}
