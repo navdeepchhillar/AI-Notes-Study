@@ -34,3 +34,42 @@
 }
 
 
+
+.brutalist-shadow {
+  box-shadow: 4px 4px 0px 0px rgba(0, 0, 0, 1);
+}
+
+.brutalist-shadow-lg {
+  box-shadow: 6px 6px 0px 0px rgba(0, 0, 0, 1);
+}
+
+.brutalist-shadow-xl {
+  box-shadow: 8px 8px 0px 0px rgba(0, 0, 0, 1);
+}
+
+.brutalist-shadow-sm {
+  box-shadow: 2px 2px 0px 0px rgba(0, 0, 0, 1);
+}
+
+.hover-brutalist:hover {
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0px 0px rgba(0, 0, 0, 1);
+}
+
+.react-flow__node {
+  border: 2px solid #0A0A0A !important;
+  border-radius: 0.5rem !important;
+  box-shadow: 4px 4px 0px 0px rgba(0, 0, 0, 1) !important;
+  font-family: 'Outfit', sans-serif !important;
+  font-weight: 600 !important;
+}
+
+.react-flow__edge-path {
+  stroke: #0A0A0A !important;
+  stroke-width: 2px !important;
+}
+
+.react-flow__handle {
+  background: #0A0A0A !important;
+  border: 2px solid #0A0A0A !important;
+}

@@ -115,3 +115,90 @@ code {
 }
 
 
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&display=swap');
+@import url('https://fonts.cdnfonts.com/css/cabinet-grotesk');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+
+
+
+body {
+    margin: 0;
+    font-family: 'Outfit', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background-color: #F4F4F0;
+}
+
+code {
+    font-family: 'JetBrains Mono', monospace;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Cabinet Grotesk', sans-serif;
+}
+
+@layer base {
+    :root {
+        --background: 244 244 240;
+        --foreground: 10 10 10;
+        --card: 0 0% 100%;
+        --card-foreground: 10 10 10;
+        --popover: 0 0% 100%;
+        --popover-foreground: 10 10 10;
+        --primary: 10 10 10;
+        --primary-foreground: 0 0% 98%;
+        --secondary: 163 230 208;
+        --secondary-foreground: 10 10 10;
+        --muted: 74 74 74;
+        --muted-foreground: 74 74 74;
+        --accent: 255 216 115;
+        --accent-foreground: 10 10 10;
+        --destructive: 0 84.2% 60.2%;
+        --destructive-foreground: 0 0% 98%;
+        --border: 10 10 10;
+        --input: 10 10 10;
+        --ring: 10 10 10;
+        --radius: 0.5rem;
+    }
+}
+
+@layer base {
+    * {
+        @apply border-border;
+    }
+    body {
+        @apply bg-background text-foreground;
+    }
+}
+
+@layer base {
+    [data-debug-wrapper="true"] {
+        display: contents !important;
+    }
+
+    [data-debug-wrapper="true"] > * {
+        margin-left: inherit;
+        margin-right: inherit;
+        margin-top: inherit;
+        margin-bottom: inherit;
+        padding-left: inherit;
+        padding-right: inherit;
+        padding-top: inherit;
+        padding-bottom: inherit;
+        column-gap: inherit;
+        row-gap: inherit;
+        gap: inherit;
+        border-left-width: inherit;
+        border-right-width: inherit;
+        border-top-width: inherit;
+        border-bottom-width: inherit;
+        border-left-style: inherit;
+        border-right-style: inherit;
+        border-top-style: inherit;
+        border-bottom-style: inherit;
+        border-left-color: inherit;
+        border-right-color: inherit;
+        border-top-color: inherit;
+        border-bottom-color: inherit;
+    }
+}
