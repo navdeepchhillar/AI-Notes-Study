@@ -13,7 +13,8 @@ import io
 import json
 import PyPDF2
 import docx
-from openai import OpenAI
+from google import genai
+from google.genai import types
 
 # =========================
 # ENV + CLIENTS
@@ -23,19 +24,19 @@ load_dotenv(ROOT_DIR / ".env")
 
 MONGO_URL = os.getenv("MONGO_URL")
 DB_NAME = os.getenv("DB_NAME")
-OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 
 if not MONGO_URL:
     raise ValueError("MONGO_URL missing in .env")
 if not DB_NAME:
     raise ValueError("DB_NAME missing in .env")
-if not OPENAI_API_KEY:
-    raise ValueError("OPENAI_API_KEY missing in .env")
+if not GEMINI_API_KEY:
+    raise ValueError("GEMINI_API_KEY missing in .env")
 
 mongo_client = AsyncIOMotorClient(MONGO_URL)
 db = mongo_client[DB_NAME]
 
-openai_client = OpenAI(api_key=OPENAI_API_KEY)
+gemini_client = genai.Client(api_key=GEMINI_API_KEY)
 
 # =========================
 # APP
@@ -96,14 +97,11 @@ def extract_text_from_pdf(file_content: bytes) -> str:
         pdf_file = io.BytesIO(file_content)
         pdf_reader = PyPDF2.PdfReader(pdf_file)
         text = ""
-
         for page in pdf_reader.pages:
             page_text = page.extract_text()
             if page_text:
                 text += page_text + "\n"
-
         return text.strip()
-
     except Exception as e:
         logging.error(f"PDF extraction error: {e}")
         return ""
@@ -114,7 +112,6 @@ def extract_text_from_docx(file_content: bytes) -> str:
         doc_file = io.BytesIO(file_content)
         doc = docx.Document(doc_file)
         return "\n".join([p.text for p in doc.paragraphs]).strip()
-
     except Exception as e:
         logging.error(f"DOCX extraction error: {e}")
         return ""
@@ -123,7 +120,6 @@ def extract_text_from_docx(file_content: bytes) -> str:
 def extract_text_from_txt(file_content: bytes) -> str:
     try:
         return file_content.decode("utf-8", errors="ignore").strip()
-
     except Exception as e:
         logging.error(f"TXT extraction error: {e}")
         return ""
@@ -194,21 +190,17 @@ async def upload_file(file: UploadFile = File(...)):
 @api_router.get("/files", response_model=List[UploadedFile])
 async def get_files():
     files = await db.files.find({}, {"_id": 0}).to_list(1000)
-
     for f in files:
         if isinstance(f["uploaded_at"], str):
             f["uploaded_at"] = datetime.fromisoformat(f["uploaded_at"])
-
     return files
 
 
 @api_router.delete("/files/{file_id}")
 async def delete_file(file_id: str):
     result = await db.files.delete_one({"id": file_id})
-
     if result.deleted_count == 0:
         raise HTTPException(status_code=404, detail="File not found")
-
     return {"message": "File deleted successfully"}
 
 
@@ -228,22 +220,15 @@ async def process_notes(request: ProcessNotesRequest):
         if not combined_text.strip():
             raise HTTPException(status_code=400, detail="No text found")
 
-        response = openai_client.chat.completions.create(
-            model="gpt-4o-mini",
-            temperature=0.4,
-            messages=[
-                {
-                    "role": "system",
-                    "content": "Create detailed, structured study notes with headings, bullets, summaries, and examples."
-                },
-                {
-                    "role": "user",
-                    "content": combined_text[:12000]
-                }
-            ]
+        prompt = (
+            "Create detailed, structured study notes with headings, bullets, summaries, and examples.\n\n"
+            + combined_text[:12000]
         )
-
-        generated_notes = response.choices[0].message.content
+        response = gemini_client.models.generate_content(
+            model="gemini-2.5-flash",
+            contents=prompt
+        )
+        generated_notes = response.text
 
         notes_obj = CombinedNotes(
             title=request.title,
@@ -260,18 +245,16 @@ async def process_notes(request: ProcessNotesRequest):
     except HTTPException:
         raise
     except Exception as e:
-        logging.error(f"Process notes error: {e}")
-        raise HTTPException(status_code=500, detail="Notes generation failed")
+        logging.error(f"Process notes error: {e}", exc_info=True)
+        raise HTTPException(status_code=500, detail=f"Notes generation failed: {str(e)}")
 
 
 @api_router.get("/combined-notes", response_model=List[CombinedNotes])
 async def get_combined_notes():
     notes = await db.combined_notes.find({}, {"_id": 0}).to_list(1000)
-
     for n in notes:
         if isinstance(n["created_at"], str):
             n["created_at"] = datetime.fromisoformat(n["created_at"])
-
     return notes
 
 
@@ -288,36 +271,27 @@ async def generate_mindmap(request: GenerateMindMapRequest):
 
         combined_text = build_combined_text(files)
 
-        response = openai_client.chat.completions.create(
-            model="gpt-4o-mini",
-            response_format={"type": "json_object"},
-            messages=[
-                {
-                    "role": "system",
-                    "content": "Return valid JSON for a ReactFlow mind map with nodes and edges."
-                },
-                {
-                    "role": "user",
-                    "content": f"""
-Create JSON:
-
+        prompt = f"""Return ONLY valid JSON with no markdown formatting, no code blocks, no explanation.
+The JSON must have this exact structure:
 {{
   "nodes": [
-    {{"id":"1","label":"Main Topic","level":0}}
+    {{"id": "1", "label": "Main Topic", "level": 0}},
+    {{"id": "2", "label": "Subtopic", "level": 1}}
   ],
   "edges": [
-    {{"from":"1","to":"2"}}
+    {{"from": "1", "to": "2"}}
   ]
 }}
 
-Material:
-{combined_text[:8000]}
-"""
-                }
-            ]
-        )
+Create a mind map from this material:
+{combined_text[:8000]}"""
 
-        mindmap_data = json.loads(response.choices[0].message.content)
+        response = gemini_client.models.generate_content(
+            model="gemini-2.5-flash",
+            contents=prompt
+        )
+        raw = response.text.strip().replace("```json", "").replace("```", "").strip()
+        mindmap_data = json.loads(raw)
 
         mindmap_obj = MindMap(
             title=request.title,
@@ -335,18 +309,16 @@ Material:
     except HTTPException:
         raise
     except Exception as e:
-        logging.error(f"Mindmap error: {e}")
-        raise HTTPException(status_code=500, detail="Mind map generation failed")
+        logging.error(f"Mindmap error: {e}", exc_info=True)
+        raise HTTPException(status_code=500, detail=f"Mind map generation failed: {str(e)}")
 
 
 @api_router.get("/mindmaps", response_model=List[MindMap])
 async def get_mindmaps():
     mindmaps = await db.mindmaps.find({}, {"_id": 0}).to_list(1000)
-
     for m in mindmaps:
         if isinstance(m["created_at"], str):
             m["created_at"] = datetime.fromisoformat(m["created_at"])
-
     return mindmaps
 
 

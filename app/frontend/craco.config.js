@@ -1,10 +1,13 @@
 module.exports = {
   style: {
     postcss: {
-      plugins: [
-        require("tailwindcss"),
-        require("autoprefixer"),
-      ],
+      mode: 'file',
+    },
+  },
+  webpack: {
+    configure: (webpackConfig) => {
+      webpackConfig.ignoreWarnings = [/Failed to parse source map/];
+      return webpackConfig;
     },
   },
 };
