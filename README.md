@@ -8,27 +8,27 @@ Upload your lecture slides, textbook chapters, or messy notes → the app extrac
 
 ## What it does
 
-- **Upload files** — drag and drop PDFs, `.docx`, or `.txt` files. Text is extracted automatically on upload.
-- **Generate combined notes** — pick one or more uploaded files and generate detailed, structured study notes (headings, bullets, summaries, examples) from their combined content.
-- **Generate mind maps** — turn the same material into a visual mind map (nodes + edges), rendered interactively with React Flow.
-- **Browse history** — previously generated notes and mind maps are saved and listed for later viewing.
+- **Upload files** - drag and drop PDFs, `.docx`, or `.txt` files. Text is extracted automatically on upload.
+- **Generate combined notes** - pick one or more uploaded files and generate detailed, structured study notes (headings, bullets, summaries, examples) from their combined content.
+- **Generate mind maps** - turn the same material into a visual mind map (nodes + edges), rendered interactively with React Flow.
+- **Browse history** - previously generated notes and mind maps are saved and listed for later viewing.
 
 ---
 
 ## Tech stack
 
 **Backend**
-- FastAPI (Python) — REST API under `/api`
-- MongoDB (via Motor, async driver) — stores uploaded files, generated notes, and mind maps
-- OpenAI API (`gpt-4o-mini`) — generates notes and mind map structure
-- PyPDF2 / python-docx — text extraction from PDF and Word files
+- FastAPI (Python) - REST API under `/api`
+- MongoDB (via Motor, async driver) - stores uploaded files, generated notes, and mind maps
+- OpenAI API (`gpt-4o-mini`) - generates notes and mind map structure
+- PyPDF2 / python-docx - text extraction from PDF and Word files
 
 **Frontend**
 - React 19 + React Router
 - Tailwind CSS
-- React Flow — interactive mind map rendering
-- Axios — API calls
-- Sonner — toast notifications
+- React Flow - interactive mind map rendering
+- Axios - API calls
+- Sonner - toast notifications
 
 ---
 
