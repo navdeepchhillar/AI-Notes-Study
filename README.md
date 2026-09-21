@@ -17,6 +17,9 @@ Upload your lecture slides, textbook chapters, or messy notes and the app extrac
 ### Mind Map
 ![Mind Map](docs/screenshots/mindmap.png)
 
+### Viewing Mind Map
+![Mind Map](docs/screenshots/viewmindmap.png)
+
 ---
 
 ## What it does
