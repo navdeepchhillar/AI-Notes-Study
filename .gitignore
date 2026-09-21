@@ -1,0 +1,18 @@
+# secrets
+.env
+*.env
+!.env.example
+
+# dependencies / build output
+node_modules/
+build/
+dist/
+.venv/
+venv/
+__pycache__/
+*.pyc
+
+# editor / OS
+*.swp
+.DS_Store
+app/backend/.env
